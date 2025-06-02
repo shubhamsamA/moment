@@ -14,13 +14,13 @@ export async function createJournalEntry(data) {
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
 
-    // Get request data for ArcJet
+   
     const req = await request();
 
-    // Check rate limit
+    
     const decision = await aj.protect(req, {
       userId,
-      requested: 1, // Specify how many tokens to consume
+      requested: 1, 
     });
 
     if (decision.isDenied()) {
@@ -48,14 +48,12 @@ export async function createJournalEntry(data) {
       throw new Error("User not found");
     }
 
-    // Get mood data
+    
     const mood = MOODS[data.mood.toUpperCase()];
     if (!mood) throw new Error("Invalid mood");
 
-    // Get mood image from Pixabay
     const moodImageUrl = await getPixabayImage(data.moodQuery);
 
-    // Create the entry
     const entry = await db.entry.create({
       data: {
         title: data.title,
@@ -68,7 +66,6 @@ export async function createJournalEntry(data) {
       },
     });
 
-    // Delete existing draft after successful publication
     await db.draft.deleteMany({
       where: { userId: user.id },
     });
@@ -82,14 +79,8 @@ export async function createJournalEntry(data) {
 
 export async function getJournalEntries({
   collectionId,
-  // ---- Filters can be implemented with backend as well ----
-  // mood = null,
-  // searchQuery = "",
-  // startDate = null,
-  // endDate = null,
-  // page = 1,
-  // limit = 10,
-  orderBy = "desc", // or "asc"
+ 
+  orderBy = "desc", 
 } = {}) {
   try {
     const { userId } = await auth();
@@ -101,38 +92,20 @@ export async function getJournalEntries({
 
     if (!user) throw new Error("User not found");
 
-    // Build where clause based on filters
+   
     const where = {
       userId: user.id,
-      // If collectionId is explicitly null, get unorganized entries
-      // If it's undefined, get all entries
+      
       ...(collectionId === "unorganized"
         ? { collectionId: null }
         : collectionId
         ? { collectionId }
         : {}),
 
-      // ---- Filters can be implemented with backend as well ----
-      // ...(mood && { mood }),
-      // ...(searchQuery && {
-      //   OR: [
-      //     { title: { contains: searchQuery, mode: "insensitive" } },
-      //     { content: { contains: searchQuery, mode: "insensitive" } },
-      //   ],
-      // }),
-      // ...((startDate || endDate) && {
-      //   createdAt: {
-      //     ...(startDate && { gte: new Date(startDate) }),
-      //     ...(endDate && { lte: new Date(endDate) }),
-      //   },
-      // }),
+
     };
 
-    // ---- Get total count for pagination ----
-    // const totalEntries = await db.entry.count({ where });
-    // const totalPages = Math.ceil(totalEntries / limit);
-
-    // Get entries with pagination
+   
     const entries = await db.entry.findMany({
       where,
       include: {
@@ -146,11 +119,10 @@ export async function getJournalEntries({
       orderBy: {
         createdAt: orderBy,
       },
-      // skip: (page - 1) * limit,
-      // take: limit,
+     
     });
 
-    // Add mood data to each entry
+    
     const entriesWithMoodData = entries.map((entry) => ({
       ...entry,
       moodData: getMoodById(entry.mood),
@@ -160,12 +132,7 @@ export async function getJournalEntries({
       success: true,
       data: {
         entries: entriesWithMoodData,
-        // pagination: {
-        //   total: totalEntries,
-        //   pages: totalPages,
-        //   current: page,
-        //   hasMore: page < totalPages,
-        // },
+       
       },
     };
   } catch (error) {

@@ -15,7 +15,7 @@ export default async function JournalEntryPage({ params }) {
 
   return (
     <>
-      {/* Header with Mood Image */}
+     
       {entry.moodImageUrl && (
         <div className="relative h-48 md:h-64 w-full">
           <Image
@@ -29,7 +29,7 @@ export default async function JournalEntryPage({ params }) {
       )}
 
       <div className="p-6 space-y-6">
-        {/* Header Section */}
+      
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="space-y-1">
@@ -71,7 +71,7 @@ export default async function JournalEntryPage({ params }) {
 
         <hr />
 
-        {/* Content Section */}
+        
         <div className="ql-snow">
           <div
             className="ql-editor"
@@ -79,7 +79,7 @@ export default async function JournalEntryPage({ params }) {
           />
         </div>
 
-        {/* Footer */}
+       
         <div className="text-sm text-gray-500 pt-4 border-t">
           Last updated {format(new Date(entry.updatedAt), "PPP 'at' p")}
         </div>
