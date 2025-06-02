@@ -47,7 +47,7 @@ export default function DeleteDialog({ entryId }) {
   return (
     <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" size="sm">
+        <Button variant="destructive" size="sm" className="hover:cursor-pointer">
           <Trash2 className="h-4 w-4 mr-2" />
           Delete
         </Button>
@@ -61,10 +61,10 @@ export default function DeleteDialog({ entryId }) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel className="hover:cursor-pointer">Cancel</AlertDialogCancel>
           <Button
             onClick={handleDelete}
-            className="bg-red-500 hover:bg-red-600"
+            className="bg-red-500 hover:bg-red-600 hover:cursor-pointer"
             disabled={isDeleting}
           >
             {isDeleting ? "Deleting..." : "Delete"}

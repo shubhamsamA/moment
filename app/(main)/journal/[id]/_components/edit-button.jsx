@@ -12,8 +12,8 @@ export default function EditButton({ entryId }) {
       variant="outline"
       size="sm"
       onClick={() => router.push(`/journal/write?edit=${entryId}`)}
-    >
-      <Edit className="h-4 w-4 mr-2" />
+     className="hover:cursor-pointer">
+      <Edit className="h-4 w-4 mr-2 " />
       Edit
     </Button>
   );
